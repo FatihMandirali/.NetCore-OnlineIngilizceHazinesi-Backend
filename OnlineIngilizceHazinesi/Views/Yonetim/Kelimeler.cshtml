@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewData["Title"] = "Kelimeler";
+    Layout = "~/Views/Yonetim/Index.cshtml";
+}
+
+<div class="row">
+
+    <div class="col-md-12">
+
+        <ol class="breadcrumb breadcrumb-arrow">
+            <li><a href="#"><i class="glyphicon glyphicon-home"></i> Anasayfa</a></li>
+            <li><a href="#"><i class="glyphicon glyphicon-list-alt"></i> Kullanıcılar</a></li>
+            <li class="active"><span><i class="glyphicon glyphicon-calendar"></i> Kullanıcı Listesi</span></li>
+        </ol>
+    </div>
+</div>
+
+<div class="panel-body">
+    <div class="content-row">
+        @*<input class="form-control" id="gdsg" type="text" placeholder="Ara.." value="@TempData["kAdi"]">*@
+        <input class="form-control" id="txtSearch" type="text" placeholder="Ara..">
+        <div class="bs-example">
+            <table class="table table-hover" ng-app="KelimelerList">
+                <thead>
+                    <tr>
+                        <th>Kullanıcı Adı</th>
+                        <th>Kelime</th>
+                        <th>Kelime Anlamı</th>
+                        <th>Düzenle</th>
+                        <th>Sil</th>
+                    </tr>
+                </thead>
+                <tbody id="KullanicilarTable" ng-controller="kelimelerList">
+                    <tr ng-repeat="xx in kelime">
+                        <td>{{xx.userName}}</td>
+                        <td>{{xx.wordEn}}</td>
+                        <td>{{xx.wordTr}}</td>
+                        <td><a href="/Yonetim/KelimelerIncele/{{xx.id}}" class="btn btn-primary">Düzenle</a> </td>
+                        <td><input type="button" name="{{xx.id}}" class="btn btn-danger KelimeSil" id="KelimeSil" value="Sil" /></td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+<script src="~/Files/js/jquery.min.js"></script>
+<script type="text/javascript">
+    var app = angular.module("KelimelerList", []);
+
+
+app.controller("kelimelerList", function ($scope, $http) {
+    $http({
+        method: "GET",
+        url: "/api/Yonetim/GetKelimelerList"
+    }).then(function mySuccess(response) {
+        $scope.kelime = response.data;
+        }, function myError(response) {
+           
+    });
+});
+
+     $(document).on("click", "#KelimeSil", function () {
+   var idd = $(this).attr('name');
+    var emp={
+    "id":idd
+    };
+
+      $.ajax({
+        method: "POST",
+        url: "/api/Yonetim/GetKelimeDelete/",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(emp),
+    }).done(function (response, statusText, jqXHR) {
+
+
+
+        alert(response.message);
+   location.reload();
+
+
+    });
+     });
+    </script>
+

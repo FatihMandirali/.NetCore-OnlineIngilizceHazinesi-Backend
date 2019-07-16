@@ -1,0 +1,67 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Yönetici Admin</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="favicon_16.ico" />
+    <link rel="bookmark" href="favicon_16.ico" />
+    <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link href="~/Files/css/site.min.css" rel="stylesheet" />
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700,400italic,600italic,700italic,800italic,300italic" rel="stylesheet" type="text/css">
+    <script src="~/Files/js/site.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.js"></script>
+</head>
+<body>
+
+    <nav role="navigation" class="navbar navbar-custom">
+        <div class="container-fluid">
+
+            <div class="navbar-header">
+                <button data-target="#bs-content-row-navbar-collapse-5" data-toggle="collapse" class="navbar-toggle" type="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="#" class="navbar-brand">Yönetici Admin</a>
+            </div>
+
+            <div id="bs-content-row-navbar-collapse-5" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="list-group-item"><a href="/Yonetim/Kullanicilar"><i class="glyphicon glyphicon-user"></i>Kullanıcılar </a></li>
+                    <li class="list-group-item"><a href="/Yonetim/Kelimeler"><i class="glyphicon glyphicon-list"></i>Kelimeler </a></li>
+                    <li class="list-group-item"><a href="/Yonetim/KelimeleOnayla"><i class="glyphicon glyphicon-ok"></i>Kelimeler Onay </a></li>
+                    <li class="list-group-item"><a href="/Yonetim/Genel"><i class="glyphicon glyphicon-ok"></i>Genel </a></li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+
+        <div class="row row-offcanvas row-offcanvas-left">
+            <div class="col-xs-6 col-sm-3 sidebar-offcanvas" role="navigation">
+                <ul class="list-group panel">
+                    <li class="list-group-item"><i class="glyphicon glyphicon-align-justify"></i> <b>Menü</b></li>
+                    <li class="list-group-item"><a href="/Yonetim/Kullanicilar"><i class="glyphicon glyphicon-user"></i>Kullanıcılar </a></li>
+                    <li class="list-group-item"><a href="/Yonetim/Kelimeler"><i class="glyphicon glyphicon-list"></i>Kelimeler </a></li>
+                    <li class="list-group-item"><a href="/Yonetim/KelimeleOnayla"><i class="glyphicon glyphicon-ok"></i>Kelimeler Onay </a></li>
+
+                </ul>
+            </div>
+            <div class="col-xs-12 col-sm-9 content">
+                <div class="panel panel-default">
+                   @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+<script src="~/Files/Back/Js/ara.js"></script>
+@*<script src="~/wwwroot/Files/Back/Js/Kullanicilar.js"></script>*@

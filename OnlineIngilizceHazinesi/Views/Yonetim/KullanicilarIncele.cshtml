@@ -1,0 +1,91 @@
+﻿
+@{
+    ViewData["Title"] = "KullanicilarIncele";
+    Layout = "~/Views/Yonetim/Index.cshtml";
+}
+
+<div class="row">
+
+    <div class="col-md-12">
+
+        <ol class="breadcrumb breadcrumb-arrow">
+            <li><a href="#"><i class="glyphicon glyphicon-home"></i> Anasayfa</a></li>
+            <li><a href="#"><i class="glyphicon glyphicon-list-alt"></i> Sorular</a></li>
+            <li class="active"><span><i class="glyphicon glyphicon-calendar"></i> Soru İncele</span></li>
+        </ol>
+    </div>
+</div>
+<div class="panel-body">
+    <div class="content-row" ng-app="KullaniciIncele">
+        <div class="bs-example" ng-controller="kullaniciIncele">
+
+            <div class="form-group">
+                @Html.Label("", "Soru", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" value="{{kullanici.kullaniciAdi}}" name="kadi" id="kadi" class="form-control" placeholder="Soru" />
+                    <input type="text" value="{{kullanici.kullaniciAdi}}" style="display:none"  name="kadi1" id="kadi1" class="form-control" placeholder="Soru" />
+
+                </div>
+            </div><br />
+
+
+
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10" style="margin-top:20px;">
+                    <a href="/Yonetim/Kullanicilar" class="btn btn-info pull-right" style="margin-left:10px">Kullanıcı Listesi</a>
+                    <button class="btn btn-success pull-right" name="{{kullanici.id}}" id="btnSoruGuncelle">Kullanıcı Güncelle</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+        var app = angular.module("KullaniciIncele", []);
+      var pathArray = window.location.pathname.split('/');
+    var secondLevelLocation = pathArray[3];
+    var emp={
+    "kullaniciAdi":secondLevelLocation
+    };
+
+    app.controller("kullaniciIncele", function ($scope, $http) {
+      $http.post("/api/Yonetim/GetKullaniciFind/", emp).then(function (response) {
+        $scope.kullanici = response.data;
+    }, function myError(response) {
+        if (response.data == "Mesaj")
+            window.location = "/Home/Index/";
+        else
+            $scope.kullanici = response.statusText;
+    });
+      });
+
+    $(document).on("click", "#btnSoruGuncelle", function () {
+    var kullaniciAdi = $('#kadi').val();
+    var kullaniciAdi1 = $('#kadi1').val();
+     var emp = {
+        "kullaniciAdiEski": kullaniciAdi1,
+        "kullaniciAdiYeni": kullaniciAdi,
+       };
+
+        $.ajax({
+        method: "POST",
+        url: "/api/Yonetim/GetKullaniciUpdate/",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(emp),
+    }).done(function (response, statusText, jqXHR) {
+
+
+
+        alert(response.message);
+    window.location.href = "/Yonetim/Kullanicilar";
+
+    });
+
+
+    });
+
+
+</script>
+

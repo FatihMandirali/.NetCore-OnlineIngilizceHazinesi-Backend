@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewData["Title"] = "Kullanicilar";
+    Layout = "~/Views/Yonetim/Index.cshtml";
+}
+<div class="row">
+
+    <div class="col-md-12">
+
+        <ol class="breadcrumb breadcrumb-arrow">
+            <li><a href="#"><i class="glyphicon glyphicon-home"></i> Anasayfa</a></li>
+            <li><a href="#"><i class="glyphicon glyphicon-list-alt"></i> Kullanıcılar</a></li>
+            <li class="active"><span><i class="glyphicon glyphicon-calendar"></i> Kullanıcı Listesi</span></li>
+        </ol>
+    </div>
+</div>
+
+<div class="panel-body">
+    <div class="content-row">
+        @*<input class="form-control" id="gdsg" type="text" placeholder="Ara.." value="@TempData["kAdi"]">*@
+        <input class="form-control" id="txtSearch" type="text" placeholder="Ara..">
+        <div class="bs-example">
+            <table class="table table-hover" ng-app="KullaniciList">
+                <thead>
+                    <tr>
+                        <th>Kullanıcı Adı</th>
+                        <th>Düzenle</th>
+                        <th>Sil</th>
+                    </tr>
+                </thead>
+                <tbody id="KullanicilarTable" ng-controller="kullaniciList">
+                    <tr ng-repeat="xx in kullanici">
+                        <td>{{xx.kullaniciAdi}}</td>
+                        <td><a href="/Yonetim/KullanicilarIncele/{{xx.kullaniciAdi}}" class="btn btn-primary">Düzenle</a> </td>
+                        <td><input type="button" name="{{xx.kullaniciAdi}}" class="btn btn-danger KullaniciSil" id="KullaniciSil" value="Sil" /></td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+<script src="~/Files/js/jquery.min.js"></script>
+<script type="text/javascript">
+    var app = angular.module("KullaniciList", []);
+
+
+app.controller("kullaniciList", function ($scope, $http) {
+    $http({
+        method: "GET",
+        url: "/api/Yonetim/GetKullanicilarList"
+    }).then(function mySuccess(response) {
+        $scope.kullanici = response.data;
+        }, function myError(response) {
+            if (response.data == "Mesaj")
+                window.location = "/Home/Index/";
+            else
+                $scope.kullanici = response.statusText;
+    });
+});
+
+
+    $(document).on("click", "#KullaniciSil", function () {
+   var kullaniciId = $(this).attr('name');
+    var emp={
+    "kullaniciAdi":kullaniciId
+    };
+
+      $.ajax({
+        method: "POST",
+        url: "/api/Yonetim/GetKullaniciDelete/",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(emp),
+    }).done(function (response, statusText, jqXHR) {
+
+
+
+        alert(response.message);
+   location.reload();
+
+
+    });
+     });
+</script>
+

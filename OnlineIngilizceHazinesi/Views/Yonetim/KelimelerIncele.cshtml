@@ -1,0 +1,117 @@
+﻿
+@{
+    ViewData["Title"] = "KelimelerIncele";
+    Layout = "~/Views/Yonetim/Index.cshtml";
+}
+
+<div class="row">
+
+    <div class="col-md-12">
+
+        <ol class="breadcrumb breadcrumb-arrow">
+            <li><a href="#"><i class="glyphicon glyphicon-home"></i> Anasayfa</a></li>
+            <li><a href="#"><i class="glyphicon glyphicon-list-alt"></i> Sorular</a></li>
+            <li class="active"><span><i class="glyphicon glyphicon-calendar"></i> Soru İncele</span></li>
+        </ol>
+    </div>
+</div>
+<div class="panel-body">
+    <div class="content-row" ng-app="KelimeIncele">
+        <div class="bs-example" ng-controller="kelimeIncele">
+
+            <div class="form-group">
+                @Html.Label("", "Kullanıcı Adı", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" value="{{kelime.userName}}" name="kadi" id="kadi" class="form-control" placeholder="Soru" />
+
+                </div>
+            </div><br />
+
+            <div class="form-group">
+                @Html.Label("", "Kelime", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" value="{{kelime.wordEn}}" name="en" id="en" class="form-control" placeholder="Soru" />
+
+                </div>
+            </div><br />
+
+            <div class="form-group">
+                @Html.Label("", "Anlamı", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" value="{{kelime.wordTr}}" name="tr" id="tr" class="form-control" placeholder="Soru" />
+
+                </div>
+            </div><br />
+
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10" style="margin-top:20px;">
+                    <a href="/Yonetim/Kullanicilar" class="btn btn-info pull-right" style="margin-left:10px">Kelime Listesi</a>
+                    <button class="btn btn-success pull-right" name="{{kelime.id}}" id="btnSoruGuncelle">Kelime Güncelle</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+      var app = angular.module("KelimeIncele", []);
+      var pathArray = window.location.pathname.split('/');
+    var secondLevelLocation = pathArray[3];
+
+ //   var user = $('#kadi').val();
+  //  var en = $('#en').val();
+   // var tr = $('#tr').val();
+  //  var emp={
+  //  "userName":secondLevelLocation,
+  //  "wordEn":en,
+ //   "wordTr":tr
+  //  };
+
+     var emp={
+    "id":secondLevelLocation
+    };
+
+    app.controller("kelimeIncele", function ($scope, $http) {
+      $http.post("/api/Yonetim/GetKelimeFind/", emp).then(function (response) {
+        $scope.kelime = response.data;
+    }, function myError(response) {
+        if (response.data == "Mesaj")
+            window.location = "/Home/Index/";
+        else
+            $scope.kullanici = response.statusText;
+    });
+      });
+
+     $(document).on("click", "#btnSoruGuncelle", function () {
+    var user = $('#kadi').val();
+    var en = $('#en').val();
+    var tr = $('#tr').val();
+    var emp={
+    "userName":secondLevelLocation,
+    "wordEn":en,
+    "wordTr":tr,
+    "id":$(this).attr('name')
+    };
+
+    $.ajax({
+        method: "POST",
+        url: "/api/Yonetim/GetKelimeUpdate/",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(emp),
+    }).done(function (response, statusText, jqXHR) {
+
+
+
+        alert(response.message);
+    window.location.href = "/Yonetim/Kelimeler";
+
+    });
+
+     });
+
+</script>
+
+
